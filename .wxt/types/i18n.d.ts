@@ -77,7 +77,7 @@ Note: You can't use this message in a manifest file.
     /**
      * No message description.
      *
-     * "wxt-react-shadcn-tailwindcss-chrome-extension"
+     * "article-quiz-chrome-extension"
      */
     getMessage(
       messageName: "extName",

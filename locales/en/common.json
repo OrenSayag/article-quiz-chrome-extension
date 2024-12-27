@@ -4,6 +4,6 @@
   "themeSettings": "Theme Settings",
   "i18nSettings": "Interface Language",
   "introduce": "Introduce",
-  "description": "This is a boilerplate and starter for chrome browser extension, built with Wxt、 React、 Tailwind css 、Shadcn ui and Typescript.\nSupport dark mode and localization ",
+  "description": "Article Quiz chrome extension",
   "reference": "Reference"
 }
