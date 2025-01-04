@@ -12,13 +12,19 @@ import {
 import { Button } from "@/components/ui/button.tsx";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import { useTheme } from "@/components/theme-provider.tsx";
+import { NotAuthenticatedTemplate } from "@/components/organisms/not-authenticated";
 
 interface Props {
   className?: string;
   container: HTMLElement;
+  authenticated: boolean;
 }
 
-export const QuizDialog: FC<Props> = ({ className, container }) => {
+export const QuizDialog: FC<Props> = ({
+  className,
+  container,
+  authenticated,
+}) => {
   const { theme } = useTheme();
 
   return (
@@ -36,16 +42,23 @@ export const QuizDialog: FC<Props> = ({ className, container }) => {
           className={cn("sm:max-w-[425px]", theme, className)}
           portalContainer={container}
         >
-          <VisuallyHidden>
-            <DialogHeader>
-              <DialogTitle>Quiz</DialogTitle>
-              <DialogDescription>Some quiz description</DialogDescription>
-            </DialogHeader>
-          </VisuallyHidden>
-          <div className={cn(theme, "dark:text-white")}>THE QUIZ CONTENT</div>
-          <DialogFooter>
-            <Button type="submit">Submit</Button>
-          </DialogFooter>
+          {authenticated && (
+            <>
+              <VisuallyHidden>
+                <DialogHeader>
+                  <DialogTitle>Quiz</DialogTitle>
+                  <DialogDescription>Some quiz description</DialogDescription>
+                </DialogHeader>
+              </VisuallyHidden>
+              <div className={cn(theme, "dark:text-white")}>
+                THE QUIZ CONTENT
+              </div>
+              <DialogFooter>
+                <Button type="submit">Submit</Button>
+              </DialogFooter>
+            </>
+          )}
+          {!authenticated && <NotAuthenticatedTemplate />}
         </DialogContent>
       </Dialog>
     </>

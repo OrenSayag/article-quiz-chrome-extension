@@ -3,25 +3,20 @@ import "./App.module.css";
 import "../../assets/main.css";
 import { browser } from "wxt/browser";
 import ExtMessage, { MessageType } from "@/entrypoints/types.ts";
-import { useTranslation } from "react-i18next";
 import { useTheme } from "@/components/theme-provider.tsx";
 import { QuizDialog } from "@/components/quiz/quiz-dialog";
+import links from "@/lib/links.ts";
+import { useUserInfo } from "@/hooks/auth/use-user-info";
 
 export default ({ container }: { container?: HTMLElement }) => {
   const [showContent, setShowContent] = useState(true);
-  const { i18n } = useTranslation();
   const { theme, toggleTheme } = useTheme();
-
-  async function initI18n() {
-    let data = await browser.storage.local.get("i18n");
-    if (data.i18n) {
-      await i18n.changeLanguage(data.i18n);
-    }
-  }
 
   function domLoaded() {
     console.log("dom loaded");
   }
+
+  const { notAuthenticated, retry: retryGetUserInfo } = useUserInfo();
 
   useEffect(() => {
     if (document.readyState === "complete") {
@@ -37,34 +32,55 @@ export default ({ container }: { container?: HTMLElement }) => {
         domLoaded();
       });
     }
-    browser.runtime.onMessage.addListener(
-      (message: ExtMessage, sender, sendResponse) => {
-        console.log("content:");
-        console.log(message);
-        if (message.messageType == MessageType.clickExtIcon) {
+    const serviceWorkerMessageListener = (message: unknown): undefined => {
+      const msg = message as ExtMessage;
+      switch (msg.messageType) {
+        case MessageType.openDashboardLogin:
+          openDashboardLogin();
+          break;
+        case MessageType.clickExtIcon:
           setShowContent(true);
-        } else if (message.messageType == MessageType.changeLocale) {
-          i18n.changeLanguage(message.content);
-        } else if (message.messageType == MessageType.changeTheme) {
-          toggleTheme(message.content);
+          break;
+        case MessageType.changeTheme:
+          toggleTheme(msg.content);
+          break;
+      }
+    };
+    browser.runtime.onMessage.addListener(serviceWorkerMessageListener);
+    const connectListener: Parameters<
+      typeof browser.runtime.onConnect.addListener
+    >[0] = (port) => {
+      port.onMessage.addListener((msg) => {
+        if (
+          (msg as ExtMessage).messageType === MessageType.LOGGED_IN &&
+          notAuthenticated
+        ) {
+          retryGetUserInfo();
+          port.disconnect();
         }
-      },
-    );
-
-    initI18n();
-  }, []);
+      });
+    };
+    browser.runtime.onConnect.addListener(connectListener);
+    return () => {
+      browser.runtime.onMessage.removeListener(serviceWorkerMessageListener);
+      browser.runtime.onConnect.removeListener(connectListener);
+    };
+  }, [notAuthenticated]);
 
   return (
     <div className={theme}>
-      {/*{showContent && <div*/}
-      {/*    className="fixed top-0 right-0 h-screen w-[400px] bg-background z-[1000000000000] rounded-l-xl shadow-2xl">*/}
-      {/*</div>*/}
-      {/*}*/}
       {showContent && container && (
         <div>
-          <QuizDialog container={container} />
+          <QuizDialog container={container} authenticated={!notAuthenticated} />
         </div>
       )}
     </div>
   );
 };
+
+function openDashboardLogin() {
+  const a = document.createElement("a");
+  a.href = links.LOGIN;
+  a.target = "_blank";
+  a.click();
+}
