@@ -20,5 +20,6 @@ declare global {
   const injectScript: typeof import('wxt/client')['injectScript']
   const storage: typeof import('wxt/storage')['storage']
   const useAppConfig: typeof import('wxt/client')['useAppConfig']
+  const useEnabledSites: typeof import('/Users/oren.s/projects/personal/article-quiz/chrome-extension/hooks/use-enabled-sites')['useEnabledSites']
   const useTheme: typeof import('/Users/oren.s/projects/personal/article-quiz/chrome-extension/components/theme-provider')['useTheme']
 }

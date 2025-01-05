@@ -1,4 +1,6 @@
+const DASHBOARD_BASE_URL = "http://localhost:3000/";
 export default {
-  LOGIN: "http://localhost:3000/auth/login?loginFromExtension=true",
-  GET_USER_INFO_ENDPOINT: "http://localhost:3000/api/me",
+  LOGIN: DASHBOARD_BASE_URL + "auth/login?loginFromExtension=true",
+  GET_USER_INFO_ENDPOINT: DASHBOARD_BASE_URL + "api/me",
+  UPDATE_ENABLED_SITES_ENDPOINT: DASHBOARD_BASE_URL + "api/enabled-sites",
 };

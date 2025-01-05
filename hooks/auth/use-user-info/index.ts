@@ -7,29 +7,34 @@ type Output = {
   notAuthenticated?: boolean;
   retry(): void;
   error?: boolean;
+  setUserInfo(userInfo: UserInfo): void;
 };
 
 export const useUserInfo = (): Output => {
   const [error, setError] = useState(false);
   const [userInfo, setUserInfo] = useState<UserInfo>();
-  const get = () =>
+  const get = (onSuccess?: (userInfo: UserInfo) => void) =>
     getUserInfo({
       onError() {
         setError(true);
       },
-      onSuccess: setUserInfo,
+      onSuccess: (userInfo) => {
+        setUserInfo(userInfo);
+        onSuccess?.(userInfo);
+      },
     });
   useEffect(() => {
     get();
   }, []);
-  const retry = () => {
-    get();
+  const retry = (onSuccess?: (userInfo: UserInfo) => void) => {
+    get(onSuccess);
   };
   return {
     notAuthenticated: !userInfo,
     retry,
     error,
     userInfo,
+    setUserInfo,
   };
 };
 

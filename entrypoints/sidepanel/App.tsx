@@ -15,6 +15,7 @@ import { useTheme } from "@/components/theme-provider.tsx";
 import Header from "@/entrypoints/sidepanel/header.tsx";
 import { useUserInfo } from "@/hooks/auth/use-user-info";
 import { NotAuthenticatedTemplate } from "@/components/organisms/not-authenticated";
+import { useUpdatedEnabledSites } from "@/hooks/user/use-update-enabled-sites";
 
 export default () => {
   const [showButton, setShowButton] = useState(false);
@@ -39,7 +40,15 @@ export default () => {
     );
   }, []);
 
-  const { notAuthenticated, userInfo } = useUserInfo();
+  const { notAuthenticated, userInfo, retry } = useUserInfo();
+  const {
+    error,
+    update: updateEnabledSites,
+    pendingUpdate: pendingUpdateEnabledSites,
+  } = useUpdatedEnabledSites({
+    refetchUserInfo: retry,
+  });
+  const { origin } = useOrigin();
 
   return (
     <div className={theme}>
@@ -52,7 +61,14 @@ export default () => {
             }}
           />
           <main className="mr-14 grid gap-4 p-4 md:gap-8 md:p-8">
-            {sidebarType === SidebarType.home && userInfo && <Home />}
+            {sidebarType === SidebarType.home && userInfo && origin && (
+              <Home
+                userInfo={userInfo}
+                origin={origin}
+                onUpdateEnabledSites={updateEnabledSites}
+                pendingUpdateEnabledSites={pendingUpdateEnabledSites}
+              />
+            )}
             {sidebarType === SidebarType.home && notAuthenticated && (
               <NotAuthenticatedTemplate />
             )}
@@ -75,3 +91,31 @@ export default () => {
     </div>
   );
 };
+
+function useOrigin() {
+  const [origin, setOrigin] = useState<string>();
+  const refreshOrigin = () => {
+    browser.tabs
+      .query({
+        active: true,
+        lastFocusedWindow: true,
+      })
+      .then(([tab]) => {
+        const origin = new URL(tab.url!).origin;
+        setOrigin(origin);
+      });
+  };
+  useEffect(() => {
+    refreshOrigin();
+    browser.tabs.onActivated.addListener(refreshOrigin);
+    browser.tabs.onUpdated.addListener(refreshOrigin);
+    return () => {
+      browser.tabs.onActivated.removeListener(refreshOrigin);
+      browser.tabs.onUpdated.removeListener(refreshOrigin);
+    };
+  }, []);
+
+  return {
+    origin,
+  };
+}

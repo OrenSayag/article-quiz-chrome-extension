@@ -7,6 +7,8 @@ import { useTheme } from "@/components/theme-provider.tsx";
 import { QuizDialog } from "@/components/quiz/quiz-dialog";
 import links from "@/lib/links.ts";
 import { useUserInfo } from "@/hooks/auth/use-user-info";
+import { useEnabledSites } from "@/hooks/use-enabled-sites.ts";
+import { UserInfo } from "@/types/auth";
 
 export default ({ container }: { container?: HTMLElement }) => {
   const [showContent, setShowContent] = useState(true);
@@ -16,7 +18,13 @@ export default ({ container }: { container?: HTMLElement }) => {
     console.log("dom loaded");
   }
 
-  const { notAuthenticated, retry: retryGetUserInfo } = useUserInfo();
+  const {
+    notAuthenticated,
+    retry: retryGetUserInfo,
+    userInfo,
+    setUserInfo,
+  } = useUserInfo();
+  const { siteEnabled } = useEnabledSites({ userInfo, origin: window.origin });
 
   useEffect(() => {
     if (document.readyState === "complete") {
@@ -37,6 +45,9 @@ export default ({ container }: { container?: HTMLElement }) => {
       switch (msg.messageType) {
         case MessageType.openDashboardLogin:
           openDashboardLogin();
+          break;
+        case MessageType.UPDATE_USER_INFO:
+          setUserInfo(JSON.parse(msg.content!) as UserInfo);
           break;
         case MessageType.clickExtIcon:
           setShowContent(true);
@@ -69,7 +80,7 @@ export default ({ container }: { container?: HTMLElement }) => {
 
   return (
     <div className={theme}>
-      {showContent && container && (
+      {showContent && container && siteEnabled && (
         <div>
           <QuizDialog container={container} authenticated={!notAuthenticated} />
         </div>

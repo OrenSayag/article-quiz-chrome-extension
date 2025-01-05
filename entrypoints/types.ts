@@ -4,6 +4,7 @@ export enum MessageType {
   changeLocale = "changeLocale",
   openDashboardLogin = "openDashboardLogin",
   LOGGED_IN = "LOGGED_IN",
+  UPDATE_USER_INFO = "UPDATED_USER_INFO",
 }
 
 export enum MessageFrom {
