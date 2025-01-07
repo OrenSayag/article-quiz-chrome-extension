@@ -3,16 +3,12 @@ import { cn } from "@/lib/utils.ts";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog.tsx";
 import { Button } from "@/components/ui/button.tsx";
-import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import { useTheme } from "@/components/theme-provider.tsx";
 import { NotAuthenticatedTemplate } from "@/components/organisms/not-authenticated";
+import { QuizContent } from "@/components/quiz/quiz-content";
 
 interface Props {
   className?: string;
@@ -39,23 +35,16 @@ export const QuizDialog: FC<Props> = ({
           </Button>
         </DialogTrigger>
         <DialogContent
-          className={cn("sm:max-w-[425px]", theme, className)}
+          className={cn(
+            "sm:max-w-[80vw] overflow-y-scroll max-h-[80vh]",
+            theme,
+            className,
+          )}
           portalContainer={container}
         >
           {authenticated && (
             <>
-              <VisuallyHidden>
-                <DialogHeader>
-                  <DialogTitle>Quiz</DialogTitle>
-                  <DialogDescription>Some quiz description</DialogDescription>
-                </DialogHeader>
-              </VisuallyHidden>
-              <div className={cn(theme, "dark:text-white")}>
-                THE QUIZ CONTENT
-              </div>
-              <DialogFooter>
-                <Button type="submit">Submit</Button>
-              </DialogFooter>
+              <QuizContent className={"overflow-y-scroll"} />
             </>
           )}
           {!authenticated && <NotAuthenticatedTemplate />}
