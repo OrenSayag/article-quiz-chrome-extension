@@ -1,6 +1,9 @@
 import React, { FC } from "react";
-import { cn } from "@/lib/utils.ts";
+import { cn, shuffleArr } from "@/lib/utils.ts";
 import { Quiz } from "@/types/quiz/types.ts";
+import { Question } from "@/components/quiz/quiz-content/question";
+import { Button } from "@/components/ui/button.tsx";
+import { useQuizForm } from "@/hooks/quiz/use-quiz/methods/use-quiz-form";
 
 interface Props {
   className?: string;
@@ -9,10 +12,35 @@ interface Props {
 
 export const QuizForm: FC<Props> = ({ className, quiz }) => {
   const { theme } = useTheme();
+  const { formQuiz, onSelectAnswer, canSubmit, onSubmit, submitted, reset } =
+    useQuizForm({
+      quiz,
+    });
   return (
     <>
       <div className={cn(theme, "dark:text-white", className)}>
-        <pre>{JSON.stringify(quiz, null, 2)}</pre>
+        {formQuiz.questions.map((q) => (
+          <Question
+            question={q}
+            key={q.id}
+            className={"mb-2"}
+            submitted={submitted}
+            onSelectAnswer={(aid) =>
+              onSelectAnswer({
+                qid: q.id,
+                aid,
+              })
+            }
+          />
+        ))}
+        <div className={"mt-4"}>
+          {!submitted && (
+            <Button disabled={!canSubmit} onClick={onSubmit}>
+              Submit
+            </Button>
+          )}
+          {submitted && <Button onClick={reset}>Retry</Button>}
+        </div>
       </div>
     </>
   );

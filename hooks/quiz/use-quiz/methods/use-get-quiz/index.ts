@@ -1,6 +1,7 @@
 import { Quiz, QuizSourceType } from "@/types/quiz/types.ts";
 import { useState, useTransition } from "react";
 import links from "@/lib/links.ts";
+import { nanoid } from "nanoid";
 
 export type GetQuizInput = {
   type: QuizSourceType;
@@ -50,6 +51,12 @@ async function getQuiz({
     onError();
     return;
   }
-  const rbody = await res.json();
+  const rbody: { data: Quiz } = await res.json();
+  rbody.data.questions.forEach((question) => {
+    question.id = nanoid();
+    question.answers.forEach((answer) => {
+      answer.id = nanoid();
+    });
+  });
   onSuccess(rbody.data);
 }

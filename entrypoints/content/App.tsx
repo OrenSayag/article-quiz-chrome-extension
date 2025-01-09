@@ -9,6 +9,7 @@ import links from "@/lib/links.ts";
 import { useUserInfo } from "@/hooks/auth/use-user-info";
 import { useEnabledSites } from "@/hooks/use-enabled-sites.ts";
 import { UserInfo } from "@/types/auth";
+import { TooltipProvider } from "@/components/ui/tooltip.tsx";
 
 export default ({ container }: { container?: HTMLElement }) => {
   const [showContent, setShowContent] = useState(true);
@@ -79,13 +80,18 @@ export default ({ container }: { container?: HTMLElement }) => {
   }, [notAuthenticated]);
 
   return (
-    <div className={theme}>
-      {showContent && container && siteEnabled && (
-        <div>
-          <QuizDialog container={container} authenticated={!notAuthenticated} />
-        </div>
-      )}
-    </div>
+    <TooltipProvider>
+      <div className={theme}>
+        {showContent && container && siteEnabled && (
+          <div>
+            <QuizDialog
+              container={container}
+              authenticated={!notAuthenticated}
+            />
+          </div>
+        )}
+      </div>
+    </TooltipProvider>
   );
 };
 
