@@ -50,6 +50,9 @@ export default ({ container }: { container?: HTMLElement }) => {
         case MessageType.UPDATE_USER_INFO:
           setUserInfo(JSON.parse(msg.content!) as UserInfo);
           break;
+        case MessageType.GO_TO_QUIZ_SOURCE:
+          goToQuizSource(msg.content!);
+          break;
         case MessageType.clickExtIcon:
           setShowContent(true);
           break;
@@ -98,6 +101,13 @@ export default ({ container }: { container?: HTMLElement }) => {
 function openDashboardLogin() {
   const a = document.createElement("a");
   a.href = links.LOGIN;
+  a.target = "_blank";
+  a.click();
+}
+
+function goToQuizSource(source: string) {
+  const a = document.createElement("a");
+  a.href = source;
   a.target = "_blank";
   a.click();
 }

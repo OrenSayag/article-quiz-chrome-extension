@@ -7,6 +7,7 @@ import { UserInfo } from "@/types/auth";
 import { useEnabledSites } from "@/hooks/use-enabled-sites.ts";
 import { Welcome } from "@/components/molecules/welcome";
 import { UpdateEnabledSitesParams } from "@/types/user/types.ts";
+import { UserQuizHistory } from "@/components/organisms/user-quiz-history";
 
 type Props = {
   userInfo: UserInfo;
@@ -43,6 +44,7 @@ export function Home({
           value={Boolean(siteEnabled)}
         />
       </div>
+      <UserQuizHistory />
     </div>
   );
 }

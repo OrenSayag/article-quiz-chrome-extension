@@ -2,6 +2,7 @@ import { Quiz, QuizSourceType } from "@/types/quiz/types.ts";
 import { useState, useTransition } from "react";
 import links from "@/lib/links.ts";
 import { nanoid } from "nanoid";
+import { MessageType } from "@/entrypoints/types.ts";
 
 export type GetQuizInput = {
   type: QuizSourceType;
@@ -16,7 +17,13 @@ export const useGetQuiz = () => {
     startGetQuiz(() => {
       getQuiz({
         ...input,
-        onSuccess: setQuiz,
+        onSuccess: (q) => {
+          setQuiz(q);
+          browser.runtime.sendMessage({
+            messageType: MessageType.GOT_QUIZ,
+            content: "",
+          });
+        },
         onError: () => {
           setError("Failed to get quiz");
         },

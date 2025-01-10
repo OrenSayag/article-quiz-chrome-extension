@@ -73,7 +73,7 @@ declare module "wxt/browser" {
       options?: GetMessageOptions,
     ): string;
     /**
-     * "article-quiz-chrome-extension"
+     * "Article Quiz"
      */
     getMessage(
       messageName: "extName",
@@ -81,8 +81,7 @@ declare module "wxt/browser" {
       options?: GetMessageOptions,
     ): string;
     /**
-     * "This is a boilerplate and starter for chrome browser extension, built with Wxt、 React、 Tailwind css 、Shadcn ui and Typescript.
-Support dark mode and localization "
+     * "Create quizzes for web page contents, and learn better!"
      */
     getMessage(
       messageName: "extDescription",

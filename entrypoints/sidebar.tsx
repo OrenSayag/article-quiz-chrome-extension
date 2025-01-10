@@ -21,7 +21,7 @@ export const sidebarTypeMap: Record<
   }
 > = {
   [SidebarType.home]: {
-    title: "Article Quiz",
+    title: "Home",
   },
   [SidebarType.settings]: {
     title: "Settings",

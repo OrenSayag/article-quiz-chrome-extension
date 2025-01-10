@@ -1,8 +1,8 @@
 {
   "extName": {
-    "message": "article-quiz-chrome-extension"
+    "message": "Article Quiz"
   },
   "extDescription": {
-    "message": "This is a boilerplate and starter for chrome browser extension, built with Wxt、 React、 Tailwind css 、Shadcn ui and Typescript.\nSupport dark mode and localization "
+    "message": "Create quizzes for web page contents, and learn better!"
   }
 }

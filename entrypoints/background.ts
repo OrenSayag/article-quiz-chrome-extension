@@ -24,6 +24,8 @@ export default defineBackground(() => {
         msg.messageType === MessageType.changeTheme ||
         msg.messageType === MessageType.LOGGED_IN ||
         msg.messageType === MessageType.UPDATE_USER_INFO ||
+        msg.messageType === MessageType.GO_TO_QUIZ_SOURCE ||
+        msg.messageType === MessageType.GOT_QUIZ ||
         msg.messageType === MessageType.changeLocale
       ) {
         let tabs = await browser.tabs.query({
