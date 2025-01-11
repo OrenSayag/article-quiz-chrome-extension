@@ -8,7 +8,8 @@ import {
 import { useQuiz } from "@/hooks/quiz/use-quiz";
 import { QuizForm } from "@/components/quiz/quiz-form";
 import { cn } from "@/lib/utils.ts";
-import { CircleX, Loader2 } from "lucide-react";
+import { Loader2 } from "lucide-react";
+import { Error } from "@/components/molecules/error";
 
 interface Props {
   className?: string;
@@ -41,17 +42,7 @@ export const QuizContent: FC<Props> = ({ className }) => {
           </div>
         ))}
       {quiz && <QuizForm quiz={quiz} />}
-      {getQuizError && (
-        <div
-          className={cn(
-            theme,
-            "dark:text-white flex items-center justify-center h-[80vh] flex-col gap-1",
-          )}
-        >
-          <h3 className={"text-5xl text-destructive"}>Error</h3>
-          <CircleX className={"stroke-destructive"} />
-        </div>
-      )}
+      {getQuizError && <Error className={"h-[80vh]"} />}
     </>
   );
 };

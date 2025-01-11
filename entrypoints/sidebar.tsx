@@ -8,9 +8,14 @@ import {
 import { IoMdCloseCircle } from "react-icons/io";
 import { IoIosSettings } from "react-icons/io";
 import { RiDashboardFill } from "react-icons/ri";
+import { browser } from "wxt/browser";
+import { MessageType } from "@/entrypoints/types.ts";
+import links from "@/lib/links.ts";
+import { User } from "lucide-react";
 
 export enum SidebarType {
   "home" = "home",
+  "profile" = "profile",
   "settings" = "settings",
 }
 
@@ -25,6 +30,9 @@ export const sidebarTypeMap: Record<
   },
   [SidebarType.settings]: {
     title: "Settings",
+  },
+  [SidebarType.profile]: {
+    title: "Profile",
   },
 };
 
@@ -70,6 +78,19 @@ const Sidebar = ({
             </TooltipTrigger>
             <TooltipContent side="right">Article Quiz</TooltipContent>
           </Tooltip>
+          <a
+            className={`hover:cursor-pointer flex h-9 w-9 items-center justify-center  text-muted-foreground transition-colors ${sidebarType == SidebarType.profile ? "rounded-full bg-primary text-lg font-semibold text-primary-foreground" : ""}`}
+            href="#"
+            onClick={async () => {
+              await browser.runtime.sendMessage({
+                messageType: MessageType.GO_TO_URL,
+                content: links.PROFILE_ENDPOINT,
+              });
+            }}
+          >
+            <User className={`h-4 w-4 transition-all group-hover:scale-110`} />
+            <span className="sr-only">Profile</span>
+          </a>
         </TooltipProvider>
       </nav>
       <nav className="mt-auto flex flex-col items-center gap-4 px-2 py-5">

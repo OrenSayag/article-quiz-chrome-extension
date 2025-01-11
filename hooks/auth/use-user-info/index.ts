@@ -50,7 +50,9 @@ async function getUserInfo({
   });
   const success = res.status === 200;
   if (!success) {
-    onError();
+    if (res.status !== 401) {
+      onError();
+    }
     return;
   }
   onSuccess(await res.json());

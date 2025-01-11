@@ -16,6 +16,7 @@ import Header from "@/entrypoints/sidepanel/header.tsx";
 import { useUserInfo } from "@/hooks/auth/use-user-info";
 import { NotAuthenticatedTemplate } from "@/components/organisms/not-authenticated";
 import { useUpdatedEnabledSites } from "@/hooks/user/use-update-enabled-sites";
+import { Error } from "@/components/molecules/error";
 
 export default () => {
   const [showButton, setShowButton] = useState(false);
@@ -40,7 +41,12 @@ export default () => {
     );
   }, []);
 
-  const { notAuthenticated, userInfo, retry } = useUserInfo();
+  const {
+    notAuthenticated,
+    userInfo,
+    retry,
+    error: getUserInfoError,
+  } = useUserInfo();
   const {
     error,
     update: updateEnabledSites,
@@ -69,9 +75,12 @@ export default () => {
                 pendingUpdateEnabledSites={pendingUpdateEnabledSites}
               />
             )}
-            {sidebarType === SidebarType.home && notAuthenticated && (
-              <NotAuthenticatedTemplate />
-            )}
+            {sidebarType === SidebarType.home &&
+              notAuthenticated &&
+              !getUserInfoError && <NotAuthenticatedTemplate />}
+            {sidebarType === SidebarType.home &&
+              notAuthenticated &&
+              getUserInfoError && <Error />}
             {sidebarType === SidebarType.settings && <SettingsPage />}
           </main>
         </div>
