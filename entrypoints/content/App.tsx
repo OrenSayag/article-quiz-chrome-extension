@@ -50,8 +50,8 @@ export default ({ container }: { container?: HTMLElement }) => {
         case MessageType.UPDATE_USER_INFO:
           setUserInfo(JSON.parse(msg.content!) as UserInfo);
           break;
-        case MessageType.GO_TO_QUIZ_SOURCE:
-          goToQuizSource(msg.content!);
+        case MessageType.GO_TO_URL:
+          goToUrl(msg.content!);
           break;
         case MessageType.clickExtIcon:
           setShowContent(true);
@@ -105,7 +105,7 @@ function openDashboardLogin() {
   a.click();
 }
 
-function goToQuizSource(source: string) {
+function goToUrl(source: string) {
   const a = document.createElement("a");
   a.href = source;
   a.target = "_blank";

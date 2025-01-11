@@ -68,7 +68,7 @@ function useTable({ history }: { history: UserQuizHistoryLog[] }) {
               <button
                 onClick={async () => {
                   await browser.runtime.sendMessage({
-                    messageType: MessageType.GO_TO_QUIZ_SOURCE,
+                    messageType: MessageType.GO_TO_URL,
                     content: l.quizSource,
                   });
                 }}

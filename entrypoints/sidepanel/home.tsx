@@ -8,6 +8,7 @@ import { useEnabledSites } from "@/hooks/use-enabled-sites.ts";
 import { Welcome } from "@/components/molecules/welcome";
 import { UpdateEnabledSitesParams } from "@/types/user/types.ts";
 import { UserQuizHistory } from "@/components/organisms/user-quiz-history";
+import { SupportLinks } from "@/components/molecules/support-links";
 
 type Props = {
   userInfo: UserInfo;
@@ -44,6 +45,7 @@ export function Home({
           value={Boolean(siteEnabled)}
         />
       </div>
+      <SupportLinks className={"my-2"} />
       <UserQuizHistory />
     </div>
   );

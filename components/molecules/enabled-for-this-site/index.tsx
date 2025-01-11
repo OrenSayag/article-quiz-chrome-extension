@@ -1,6 +1,7 @@
 import { FC } from "react";
 import { cn } from "@/lib/utils.ts";
 import { Switch } from "@/components/ui/switch.tsx";
+import { H4 } from "@/components/ui/h4.tsx";
 
 interface Props {
   className?: string;
@@ -19,10 +20,8 @@ export const EnabledForThisSite: FC<Props> = ({
 }) => {
   return (
     <>
-      <div className={cn(className)}>
-        <label className={"mb-6 underline text-lg font-semibold"}>
-          Enable Quizzes for this Site
-        </label>
+      <div className={cn("flex flex-col gap-2", className)}>
+        <H4>Enable Quizzes for this Site</H4>
         <p>{origin}</p>
         <Switch
           disabled={disabled}

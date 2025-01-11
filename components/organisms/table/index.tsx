@@ -46,7 +46,7 @@ export const Table: FC<Props> = ({
   return (
     <>
       <RawTable
-        containerClassname="h-fit max-h-[70vh] overflow-y-auto relative"
+        containerClassname="h-fit max-h-[50vh] overflow-y-auto relative"
         className={cn(className)}
         {...props}
       >

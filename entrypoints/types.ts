@@ -5,7 +5,7 @@ export enum MessageType {
   openDashboardLogin = "openDashboardLogin",
   LOGGED_IN = "LOGGED_IN",
   UPDATE_USER_INFO = "UPDATED_USER_INFO",
-  GO_TO_QUIZ_SOURCE = "GO_TO_QUIZ_SOURCE",
+  GO_TO_URL = "GO_TO_URL",
   GOT_QUIZ = "GOT_QUIZ",
 }
 
